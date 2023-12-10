@@ -1,5 +1,5 @@
-[![GoDoc](https://godoc.org/github.com/kitech/php-go/phpgo?status.svg)](https://godoc.org/github.com/kitech/php-go/phpgo)
-[![GoDoc](https://godoc.org/github.com/kitech/php-go/zend?status.svg)](https://godoc.org/github.com/kitech/php-go/zend)
+[![GoDoc](https://godoc.org/github.com/knobik/php-go/phpgo?status.svg)](https://godoc.org/github.com/knobik/php-go/phpgo)
+[![GoDoc](https://godoc.org/github.com/knobik/php-go/zend?status.svg)](https://godoc.org/github.com/knobik/php-go/zend)
 
 ### php-go
 
@@ -29,17 +29,17 @@ Simple, easy, fun to write PHP extensions.
 go get:
 
 ```
-go get github.com/kitech/php-go
-cd $GOPATH/src/github.com/kitech/php-go
+go get github.com/knobik/php-go
+cd $GOPATH/src/github.com/knobik/php-go
 # adjust PHPCFG path if needed
 PHPCFG=`which php-config` make
 ```
 
 manual:
 
-    mkdir -p $GOPATH/src/github.com/kitech
-    git clone https://github.com/kitech/php-go.git $GOPATH/src/github.com/kitech/php-go
-    cd $GOPATH/src/github.com/kitech/php-go
+    mkdir -p $GOPATH/src/github.com/knobik
+    git clone https://github.com/knobik/php-go.git $GOPATH/src/github.com/knobik/php-go
+    cd $GOPATH/src/github.com/knobik/php-go
     make
     ls -lh php-go/hello.so
     php56 -d extension=./hello.so examples/hello.php
@@ -51,7 +51,7 @@ manual:
 // package main is required
 package main
 
-import "github.com/kitech/php-go/phpgo"
+import "github.com/knobik/php-go/phpgo"
 
 func foo_in_go() {
 }

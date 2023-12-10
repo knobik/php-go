@@ -21,7 +21,6 @@ func go2cBool(ok bool) C.int {
 	return 0
 }
 
-//
 type go2cfnty *[0]byte
 
 // 参数怎么传递
@@ -31,4 +30,11 @@ func go2cfnp(fn unsafe.Pointer) *[0]byte {
 func go2cfn(fn interface{}) *[0]byte {
 	// assert(reflect.TypeOf(fn).Kind == reflect.Ptrx)
 	return go2cfnp(fn.(unsafe.Pointer))
+}
+
+func go2cBoolChar(ok bool) C.uchar {
+	if ok {
+		return 1
+	}
+	return 0
 }

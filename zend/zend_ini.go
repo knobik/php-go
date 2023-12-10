@@ -97,7 +97,7 @@ func zendIniEntryDefFree(this *IniEntryDef) {
 func (this *IniEntryDef) Fill3(name string, defaultValue interface{}, modifiable bool,
 	onModify func(), arg1, arg2, arg3 interface{}, displayer func()) {
 	this.zie.name = C.CString(name)
-	this.zie.modifiable = go2cBool(modifiable)
+	this.zie.modifiable = go2cBoolChar(modifiable)
 	// this.zie.orig_modifiable = go2cBool(modifiable)
 	if ZEND_ENGINE == ZEND_ENGINE_3 {
 		this.zie.on_modify = go2cfn(C.gozend_ini_modifier7)
@@ -120,12 +120,12 @@ func (this *IniEntryDef) Fill3(name string, defaultValue interface{}, modifiable
 	}
 
 	if ZEND_ENGINE == ZEND_ENGINE_3 {
-		this.zie.name_length = C.uint32_t(len(name))
+		this.zie.name_length = C.uint16_t(len(name))
 		this.zie.value_length = C.uint32_t(len(value))
 	} else {
 		// why need +1 for php5?
 		// if not, zend_alter_ini_entry_ex:280行会出现zend_hash_find无结果失败
-		this.zie.name_length = C.uint32_t(len(name) + 1)
+		this.zie.name_length = C.uint16_t(len(name) + 1)
 		this.zie.value_length = C.uint32_t(len(value) + 1)
 	}
 	log.Println(name, len(name))
@@ -159,6 +159,7 @@ func (this *IniEntryDef) SetDisplayer(displayer func(ie *IniEntry, itype int)) {
 var iniNameEntries = make(map[string]*IniEntryDef, 0)
 
 // the new_value is really not *C.char, it's *C.zend_string
+//
 //export gozend_ini_modifier7
 func gozend_ini_modifier7(ie *C.zend_ini_entry, new_value *C.zend_string, mh_arg1 unsafe.Pointer, mh_arg2 unsafe.Pointer, mh_arg3 unsafe.Pointer, stage C.int) C.int {
 	// log.Println(ie, "//", new_value, stage, ie.modifiable)

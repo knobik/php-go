@@ -18,21 +18,21 @@ import (
 )
 
 const (
-	PHPTY_IS_NULL         = C.IS_NULL
-	PHPTY_IS_LONG         = C.IS_LONG
-	PHPTY_IS_DOUBLE       = C.IS_DOUBLE
-	PHPTY_IS_BOOL         = C._IS_BOOL
-	PHPTY_IS_TRUE         = C.IS_TRUE
-	PHPTY_IS_FALSE        = C.IS_FALSE
-	PHPTY_IS_ARRAY        = C.IS_ARRAY
-	PHPTY_IS_OBJECT       = C.IS_OBJECT
-	PHPTY_IS_STRING       = C.IS_STRING
-	PHPTY_IS_RESOURCE     = C.IS_RESOURCE
-	PHPTY_IS_CONSTANT     = C.IS_CONSTANT
-	PHPTY_IS_CONSTANT_AST = C.IS_CONSTANT_AST
-	PHPTY_IS_CALLABLE     = C.IS_CALLABLE
-    PHPTY_IS_SELF         = C.IS_SELF
-    PHPTY_IS_INTERFACE    = C.IS_ZVAL
+	PHPTY_IS_NULL     = C.IS_NULL
+	PHPTY_IS_LONG     = C.IS_LONG
+	PHPTY_IS_DOUBLE   = C.IS_DOUBLE
+	PHPTY_IS_BOOL     = C._IS_BOOL
+	PHPTY_IS_TRUE     = C.IS_TRUE
+	PHPTY_IS_FALSE    = C.IS_FALSE
+	PHPTY_IS_ARRAY    = C.IS_ARRAY
+	PHPTY_IS_OBJECT   = C.IS_OBJECT
+	PHPTY_IS_STRING   = C.IS_STRING
+	PHPTY_IS_RESOURCE = C.IS_RESOURCE
+	//PHPTY_IS_CONSTANT     = C.IS_CONSTANT
+	//PHPTY_IS_CONSTANT_AST = C.IS_CONSTANT_AST
+	PHPTY_IS_CALLABLE  = C.IS_CALLABLE
+	PHPTY_IS_SELF      = C.IS_SELF
+	PHPTY_IS_INTERFACE = C.IS_ZVAL
 
 	PHPTY_IS_CONSTANT_TYPE_MASK    = 0x00f
 	PHPTY_IS_CONSTANT_UNQUALIFIED  = 0x010
@@ -136,9 +136,9 @@ func RetType2Php(fn interface{}) (rety int) {
 			rety = PHPTY_IS_RESOURCE
 		case reflect.Slice, reflect.Array, reflect.Map:
 			rety = PHPTY_IS_ARRAY
-        case reflect.Interface:
-            // 尝试支持返回interface
-            rety = PHPTY_IS_INTERFACE
+		case reflect.Interface:
+			// 尝试支持返回interface
+			rety = PHPTY_IS_INTERFACE
 		default:
 			log.Panicln("wtf", fty.Out(0).String(), fty.Out(0).Kind().String())
 		}

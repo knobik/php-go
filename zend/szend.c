@@ -18,7 +18,7 @@ int gozend_call_user_function(zval *object, char *func_name, zval *retval_ptr, i
 
     assert(retval_ptr != NULL);
     if (call_user_function(CG(function_table), object , &function_name,
-                           retval_ptr, argc, params TSRMLS_CC) == SUCCESS) {
+                           retval_ptr, argc, params) == SUCCESS) {
         return 0;
     }
     return -1;
@@ -32,7 +32,7 @@ int gozend_call_user_function(zval **object, char *func_name, zval *retval_ptr, 
 
   assert(retval_ptr != NULL);
   if (call_user_function(CG(function_table), object , &function_name,
-                         retval_ptr, argc, params TSRMLS_CC) == SUCCESS) {
+                         retval_ptr, argc, params) == SUCCESS) {
     return 0;
   }
   return -1;
@@ -113,7 +113,7 @@ int gozend_zend_version_no() {
 }
 
 char* gozend_zend_version() {
-    return get_zend_version();
+    return (char*)get_zend_version();
 }
 
 void gozend_efree(void *ptr) {
@@ -149,7 +149,7 @@ char gozend_eval_string(char *code)
     INIT_ZVAL(retval);
     #endif
 
-    int ret = zend_eval_string(code, &retval, (char*)"" TSRMLS_CC);
+    int ret = zend_eval_string(code, &retval, (char*)"");
 
     // zval_ptr_dtor(&retval);
     zval_dtor(&retval);
@@ -175,7 +175,7 @@ void call_user_function_callback(char *data)
 
     void *cobj = NULL; /* no object */
     if (call_user_function(CG(function_table), cobj , &function_name,
-                           &retval_ptr, argc, NULL TSRMLS_CC) == SUCCESS) {
+                           &retval_ptr, argc, NULL) == SUCCESS) {
         /* do something with retval_ptr here if you like */
     }
 
@@ -209,8 +209,7 @@ static int _gozend_function_exists_ht(char *fname, HashTable* ht) {
 	 * A bit of a hack, but not a bad one: we see if the handler of the function
 	 * is actually one that displays "function is disabled" message.
 	 */
-	if (func && (func->type != ZEND_INTERNAL_FUNCTION ||
-                 func->internal_function.handler != zif_display_disabled_function)) {
+	if (func && (func->type != ZEND_INTERNAL_FUNCTION)) { // || func->internal_function.handler != zif_display_disabled_function
         return 1;
     } else {
         return 0;

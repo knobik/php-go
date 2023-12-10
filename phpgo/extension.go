@@ -22,7 +22,7 @@ import "log"
 import "os"
 import "strings"
 
-import "github.com/kitech/php-go/zend"
+import "github.com/knobik/php-go/zend"
 
 // 一个程序只能创建一个扩展
 // 所以使用全局变量也没有问题。
@@ -245,18 +245,18 @@ func addMethod(ctor interface{}, cidx int, fidx int, cname string, mname string,
 	}
 
 	isSelf := false
-    methodRetType := reflect.TypeOf(fn)
-    if methodRetType.NumOut() > 0 {
-        classType := reflect.TypeOf(ctor).Out(0)
-        isSelf = classType == methodRetType.Out(0)
-    }
+	methodRetType := reflect.TypeOf(fn)
+	if methodRetType.NumOut() > 0 {
+		classType := reflect.TypeOf(ctor).Out(0)
+		isSelf = classType == methodRetType.Out(0)
+	}
 
 	var rety int
-    if !isSelf {
-    	rety = zend.RetType2Php(fn)
-    } else {
-        rety = zend.PHPTY_IS_SELF
-    }
+	if !isSelf {
+		rety = zend.RetType2Php(fn)
+	} else {
+		rety = zend.PHPTY_IS_SELF
+	}
 
 	ccname := C.CString(cname)
 	cmname := C.CString(mname)
@@ -341,12 +341,7 @@ func AddConstant(name string, val interface{}, namespace interface{}) error {
 			C.zend_register_double_constant_compat(modname, C.size_t(len(name)), C.double(fv.(float64)),
 				C.CONST_CS|C.CONST_PERSISTENT, C.int(module_number))
 		case reflect.Bool:
-			v := val.(bool)
-			var bv int8 = 1
-			if v == false {
-				bv = 0
-			}
-			C.zend_register_bool_constant_compat(modname, C.size_t(len(name)), C.zend_bool(bv),
+			C.zend_register_bool_constant_compat(modname, C.size_t(len(name)), C.zend_bool(val.(bool)),
 				C.CONST_CS|C.CONST_PERSISTENT, C.int(module_number))
 		default:
 			err := fmt.Errorf("Warning, unsported constant value type: %v", valty.Kind().String())
@@ -434,8 +429,8 @@ func go_module_startup_func(a0 int, a1 int) int {
 	return gext.module_startup_func(a0, a1)
 }
 
-//
 // 以整数类型传递go值类型的实现的回调方式
+//
 //export on_phpgo_function_callback
 func on_phpgo_function_callback(cbid int, phpthis uintptr,
 	a0 uintptr, a1 uintptr, a2 uintptr, a3 uintptr, a4 uintptr,
@@ -484,8 +479,8 @@ func on_phpgo_function_callback(cbid int, phpthis uintptr,
 	return ret
 }
 
-//
 // 以指针类型传递go值类型的实现的回调方式
+//
 //export on_phpgo_function_callback_p
 func on_phpgo_function_callback_p(cbid int, phpthis unsafe.Pointer,
 	a0 unsafe.Pointer, a1 unsafe.Pointer, a2 unsafe.Pointer, a3 unsafe.Pointer, a4 unsafe.Pointer,
@@ -544,10 +539,10 @@ func on_phpgo_function_callback_p(cbid int, phpthis unsafe.Pointer,
 	// return ret
 }
 
-//
 // 比较通用的在C中调用go任意函数的方法
 // on_phpgo_function_callback是根据cbid来确定如何调用函数
 // 该函数直接根据函数指定fp函数指针对应的函数。
+//
 //export call_golang_function
 func call_golang_function(fp unsafe.Pointer, a0 uintptr, a1 uintptr, a2 uintptr, a3 uintptr, a4 uintptr,
 	a5 uintptr, a6 uintptr, a7 uintptr, a8 uintptr, a9 uintptr) uintptr {
@@ -570,9 +565,9 @@ func call_golang_function(fp unsafe.Pointer, a0 uintptr, a1 uintptr, a2 uintptr,
 	return ret
 }
 
-//
 // 比较通用的在C中调用go任意函数的方法（但参数是都指针形式的）
 // 该函数直接根据函数指定fp函数指针对应的函数。
+//
 //export call_golang_function_p
 func call_golang_function_p(fp unsafe.Pointer, a0 unsafe.Pointer, a1 unsafe.Pointer, a2 unsafe.Pointer,
 	a3 unsafe.Pointer, a4 unsafe.Pointer, a5 unsafe.Pointer, a6 unsafe.Pointer,

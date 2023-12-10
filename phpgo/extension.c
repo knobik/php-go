@@ -42,7 +42,7 @@ static int(*phpgo_module_shutdown_cbfunc)(int, int) = 0;
 static int(*phpgo_request_startup_cbfunc)(int, int) = 0;
 static int(*phpgo_request_shutdown_cbfunc)(int, int) = 0;
 
-int phpgo_module_startup_func(int type, int module_number TSRMLS_DC)
+int phpgo_module_startup_func(int type, int module_number)
 {
     if (phpgo_module_startup_cbfunc) {
         return call_golang_function(phpgo_module_startup_cbfunc, type, module_number, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -50,7 +50,7 @@ int phpgo_module_startup_func(int type, int module_number TSRMLS_DC)
     return 0;
 }
 
-int phpgo_module_shutdown_func(int type, int module_number TSRMLS_DC)
+int phpgo_module_shutdown_func(int type, int module_number)
 {
     if (phpgo_module_shutdown_cbfunc) {
         return call_golang_function(phpgo_module_shutdown_cbfunc, type, module_number, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -58,7 +58,7 @@ int phpgo_module_shutdown_func(int type, int module_number TSRMLS_DC)
     return 0;
 }
 
-int phpgo_request_startup_func(int type, int module_number TSRMLS_DC)
+int phpgo_request_startup_func(int type, int module_number)
 {
     if (phpgo_request_startup_cbfunc) {
         return call_golang_function(phpgo_request_startup_cbfunc, type, module_number, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -66,7 +66,7 @@ int phpgo_request_startup_func(int type, int module_number TSRMLS_DC)
     return 0;
 }
 
-int phpgo_request_shutdown_func(int type, int module_number TSRMLS_DC)
+int phpgo_request_shutdown_func(int type, int module_number)
 {
     if (phpgo_request_shutdown_cbfunc) {
         return call_golang_function(phpgo_request_shutdown_cbfunc, type, module_number, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -564,7 +564,7 @@ void phpgo_function_handler(zend_execute_data *execute_data, zval *return_value)
 
 #else  // php < 7.0
 void phpgo_function_handler5(int cbid, phpgo_callback_info* cbi, int ht, zval *return_value, zval **return_value_ptr,
-                            zval *this_ptr, int return_value_used TSRMLS_DC)
+                            zval *this_ptr, int return_value_used)
 {
     char* arg_types = phpgo_callback_info_get_arg_types(cbi);
 
@@ -600,7 +600,7 @@ void phpgo_function_handler5(int cbid, phpgo_callback_info* cbi, int ht, zval *r
 }
 
 void phpgo_function_handler(int ht, zval *return_value, zval **return_value_ptr,
-                             zval *this_ptr, int return_value_used TSRMLS_DC)
+                             zval *this_ptr, int return_value_used)
 {
     const char *func_name = get_active_function_name(TSRMLS_C);
     const char *class_name = NULL;
@@ -643,7 +643,7 @@ int zend_add_class(int cidx, char *cname)
     phpgo_class_entry* pce = phpgo_object_map_get(g_class_map, cname);
     zend_class_entry *ce = (zend_class_entry*)phpgo_class_get(pce);
     INIT_CLASS_ENTRY_EX((*ce), cname, strlen(cname), phpgo_class_get_funcs(pce));
-    zend_register_internal_class(ce TSRMLS_CC);
+    zend_register_internal_class(ce);
 
     phpgo_class_map_add(cname, ce);
 

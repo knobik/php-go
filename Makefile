@@ -47,6 +47,6 @@ quickbc:
 	go build -v -x -buildmode=c-archive -o php-grpc.c.a examples/hello.go
 
 clean:
-	rm -f $(GOPATH)/pkg/$(GOOS)_$(GOARCH)/github.com/kitech/php-go/zend.a
-	rm -f $(GOPATH)/pkg/$(GOOS)_$(GOARCH)/github.com/kitech/php-go/phpgo.a
+	rm -f $(GOPATH)/pkg/$(GOOS)_$(GOARCH)/github.com/knobik/php-go/zend.a
+	rm -f $(GOPATH)/pkg/$(GOOS)_$(GOARCH)/github.com/knobik/php-go/phpgo.a
 	rm -f hello.so

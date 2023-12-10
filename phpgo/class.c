@@ -93,7 +93,7 @@ struct _phpgo_function_entry {
 extern void phpgo_function_handler(zend_execute_data *execute_data, zval *return_value);
 #else
 extern void phpgo_function_handler(int ht, zval *return_value, zval **return_value_ptr,
-                                   zval *this_ptr, int return_value_used TSRMLS_DC);
+                                   zval *this_ptr, int return_value_used);
 #endif
 
 phpgo_function_entry *phpgo_function_new(const char *func_name) {

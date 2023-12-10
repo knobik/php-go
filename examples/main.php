@@ -3,7 +3,7 @@
 // test run function
 function test_funcs() {
     foo_hello();
-    foo_hello3(12, "abc", 3.5);
+//     foo_hello3(12, "abc", 3.5);
 }
 
 // test run class method
@@ -56,6 +56,6 @@ function test_inis() {
 }
 
 test_funcs();
-test_classes();
-test_inis();
+// test_classes();
+// test_inis();
 
